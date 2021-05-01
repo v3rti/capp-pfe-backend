@@ -1,0 +1,14 @@
+{
+  "notes": [
+    {
+      "title": "Card 1",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris velit dui, pellentesque in posuere vitae, sodales in libero. Aliquam eu ex ac turpis mattis eleifend. Mauris pretium ligula sit amet iaculis tristique. Sed vel nisl massa.",
+      "image": "https://source.unsplash.com/1600x900/?animal"
+    },
+    {
+      "title": "Card 2",
+      "description": "Quisque sit amet magna ullamcorper sapien aliquet euismod eu eu dolor. Aenean quis nisl at tortor pharetra rhoncus quis ac metus. Nullam et mollis diam. Maecenas in lorem porttitor, tempus sem eu, euismod sapien.",
+      "image": "https://source.unsplash.com/1600x900/?animal,water"
+    }
+  ]
+}
