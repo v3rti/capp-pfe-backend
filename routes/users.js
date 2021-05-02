@@ -4,7 +4,28 @@ const User = require('../models/User');
 const router = express.Router();
 
 function handlingErrors(err){
-  console.log(err.message);
+  
+  let errors = {email: "",username:"",fullName: "", password: ""};
+  
+  if(err.message.includes("password")){
+    errors.password = "Password minimum length is 6 characters"
+  }
+  if(err.message.includes("email")){
+    errors.email = "Please enter a valid Email"
+  }
+  if(err.code === 11000){
+    errors.email = "Email already used";
+  }
+  if(err.message.includes("username")){
+    errors.username = "Please enter a username";
+  }
+  if(err.message.includes("fullName")){
+    errors.fullName = "Please enter your full name";
+  }
+
+  
+
+  return errors;
 }
 
 
@@ -29,8 +50,9 @@ router.post('/',async (req,res) => {
     res.json(savedUser);
     
   }catch(err){
-    res.json({message: err})
-    handlingErrors(err);
+    const funcError = handlingErrors(err);
+    res.json(funcError)
+    
   }
 
   
