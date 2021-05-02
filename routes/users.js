@@ -5,26 +5,29 @@ const router = express.Router();
 
 function handlingErrors(err){
   console.log(err.message);
+
   let errors = {email: "",username:"",fullName: "", password: ""};
   
   if(err.message.includes("password")){
     errors.password = "Password minimum length is 6 characters"
   }
   if(err.message.includes("email")){
-    errors.email = "Please enter a valid Email"
-  }
-  if(err.code === 11000){
-    errors.email = "Email already used";
+    errors.email = "Please enter a valid email"
   }
   if(err.message.includes("username")){
-    errors.username = "Please enter a username";
+    errors.username = "Please enter a valid username";
   }
   if(err.message.includes("fullName")){
     errors.fullName = "Please enter your full name";
   }
 
+  if(err.code === 11000 && err.message.includes("email")){
+    errors.email = "Email already used";
+  }
+  if(err.code === 11000 && err.message.includes("username")){
+    errors.username = "Username already used";
+  }
   
-
   return errors;
 }
 
