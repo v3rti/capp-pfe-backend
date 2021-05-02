@@ -4,7 +4,7 @@ const User = require('../models/User');
 const router = express.Router();
 
 function handlingErrors(err){
-  
+  console.log(err.message);
   let errors = {email: "",username:"",fullName: "", password: ""};
   
   if(err.message.includes("password")){
@@ -51,8 +51,7 @@ router.post('/',async (req,res) => {
     
   }catch(err){
     const funcError = handlingErrors(err);
-    res.json(funcError)
-    
+    res.status(400).json({errorMsg: funcError})
   }
 
   
