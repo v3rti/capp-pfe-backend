@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const convoRoutes = require('./routes/convos');
 const usersRoutes = require('./routes/users');
-
+const activeConvosRoutes = require('./routes/activeConvos');
 
 const app = express();
 
@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 
 app.use('/convos',convoRoutes);
 app.use('/users', usersRoutes);
+app.use('/activeConvos',activeConvosRoutes);
 //Routes
 
 app.get('/',(req,res) => {

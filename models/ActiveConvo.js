@@ -17,16 +17,20 @@ const ChatMessagesSchema = new mongoose.Schema({
   senderUsername: {
     type: String
   },
-  message: [String],
-  messageDate: [Date]
+  message: {
+    type: String
+  },
+  messageDate: {
+    type: Date
+  },
 })
 
 const ActiveConvoSchema = new mongoose.Schema({
   cuid: {
     type: String,
   },
-  users_joined: UsersJoinedSchema,
-  chats: ChatMessagesSchema
+  users_joined: [UsersJoinedSchema],
+  chats: [ChatMessagesSchema]
 })
 
 const ActiveConversations = mongoose.model('ActiveConversation',ActiveConvoSchema);

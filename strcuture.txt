@@ -1,0 +1,33 @@
+{
+  "cuid": "convoid41548d4",
+  "user_joined": [{
+      "fullName": "Mohamed Amine",
+      "username": "vertigo2648",
+      "joinedate": "06/05/2021"
+  }],
+  "chats": [{
+      "senderUsername": "vertigo2648",
+      "message": "first ever message, hello world",
+      "messageDate": "06-05-2021 22:40:26"
+  }]
+}
+
++++++++++++++++++++++++++++++++++++++++
+{
+    "cuid": "convoid41548d4",
+    "user_joined": [{
+        "fullName": "Mohamed Amine",
+        "username": "vertigo2648",
+        "joinedate": "06/05/2021"
+    },
+    {
+        "fullName": "Saad Jassini",
+        "username": "username",
+        "joinedate": "06/05/2021"
+    }],
+    "chats": [{
+        "senderUsername": "vertigo2648",
+        "message": "first ever message, hello world",
+        "messageDate": "06-05-2021 22:40:26"
+    }]
+}
