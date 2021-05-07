@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const Conversation = require('../models/Conversation')
+const {requireAuth} = require('../middleware/authentication');
 
 // Get back all convos
 
-router.get('/', async (req,res) => {
+router.get('/', requireAuth, async (req,res) => {
   try{
     const convos = await Conversation.find();
     res.json(convos)
+    
   }catch(err){
     res.json({message: err})
   }
@@ -15,7 +17,7 @@ router.get('/', async (req,res) => {
 
 // Submit Convos
 
-router.post('/', async (req,res) => {
+router.post('/',async (req,res) => {
   console.log(req.body);
   const convo = new Conversation({
     title: req.body.title,
@@ -33,7 +35,7 @@ router.post('/', async (req,res) => {
 })
 
 // specific convo
-router.get('/:postId', async (req,res) => {
+router.get('/:postId', requireAuth, async (req,res) => {
   try{
   const convo = await Conversation.findOne({cuid: req.params.postId});
   res.json(convo);

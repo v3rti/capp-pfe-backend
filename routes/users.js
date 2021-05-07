@@ -66,7 +66,6 @@ router.post('/',async (req,res) => {
 router.post('/login', (req,res) => {
   const {email,password} = req.body;
   
-
   User.findOne({email : email}, (err,docs) => {
     if(docs){
       bcrypt.compare(password, docs.password, (err,bres) => {

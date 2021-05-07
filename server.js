@@ -2,12 +2,13 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
-
+const cookieParser = require('cookie-parser');
 
 
 const convoRoutes = require('./routes/convos');
 const usersRoutes = require('./routes/users');
 const activeConvosRoutes = require('./routes/activeConvos');
+
 
 const app = express();
 
@@ -15,14 +16,16 @@ app.use(bodyParser.json());
 
 //Import Routes
 
-
-app.use('/convos',convoRoutes);
+app.use(cookieParser())
+app.use('/convos', convoRoutes);
 app.use('/users', usersRoutes);
 app.use('/activeConvos',activeConvosRoutes);
 //Routes
 
 app.get('/',(req,res) => {
   res.send('We are on home');
+  
+  
 })
 
 
