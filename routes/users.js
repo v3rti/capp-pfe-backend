@@ -1,5 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const router = express.Router();
 
@@ -60,6 +62,25 @@ router.post('/',async (req,res) => {
   
 })
 
+router.post('/login', (req,res) => {
+  const {email,password} = req.body;
+
+  User.findOne({email : email}, (err,docs) => {
+    if(docs){
+      bcrypt.compare(password, docs.password, (err,bres) => {
+        if(bres){
+          res.send("password matches");
+        }else {
+          res.send("password not matching");
+        }
+      })
+    }else {
+      console.log(docs);
+      res.send("Sorry but the email you entered does not exist");
+    }
+  });
+
+})
 
 
 module.exports = router;
