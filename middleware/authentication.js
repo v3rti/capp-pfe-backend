@@ -6,6 +6,7 @@ const requireAuth = (req,res,next) => {
     jwt.verify(req.cookies.jwt, process.env.TOKEN_SECRET, (err,decodedToken) => {
       if(err){
         res.status(400);
+        next();
       }else{
         console.log(decodedToken);
         next();

@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const convoRoutes = require('./routes/convos');
 const usersRoutes = require('./routes/users');
 const activeConvosRoutes = require('./routes/activeConvos');
-
+const loginStatusRoutes = require('./routes/loginStatus');
 
 const app = express();
 
@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 //Import Routes
 
 app.use(cookieParser())
+app.use('/status',loginStatusRoutes);
 app.use('/convos', convoRoutes);
 app.use('/users', usersRoutes);
 app.use('/activeConvos',activeConvosRoutes);
