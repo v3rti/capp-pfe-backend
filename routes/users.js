@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../models/User');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
@@ -64,19 +65,22 @@ router.post('/',async (req,res) => {
 
 router.post('/login', (req,res) => {
   const {email,password} = req.body;
+  
 
   User.findOne({email : email}, (err,docs) => {
     if(docs){
       bcrypt.compare(password, docs.password, (err,bres) => {
         if(bres){
-          res.send("password matches");
+          const token = jwt.sign({id: docs._id}, process.env.TOKEN_SECRET);
+          res.cookie('jwt', token, { httpOnly: true });
+          res.status(200).send("password matches");
         }else {
-          res.send("password not matching");
+          res.status(400).send("password not matching");
         }
       })
     }else {
       console.log(docs);
-      res.send("Sorry but the email you entered does not exist");
+      res.status(400).send("Sorry but the email you entered does not exist");
     }
   });
 
