@@ -71,7 +71,7 @@ router.post('/login', (req,res) => {
       bcrypt.compare(password, docs.password, (err,bres) => {
         if(bres){
           const token = jwt.sign({id: docs._id, fullName: docs.fullName, email: docs.email, username: docs.username}, process.env.TOKEN_SECRET);
-          res.cookie('jwt', token, { httpOnly: true });
+          res.cookie('jwt', token, { httpOnly: true, maxAge: 1000*60*60*24*3 });
           res.status(200).json(docs)
         }else {
           res.status(400).send("password not matching");

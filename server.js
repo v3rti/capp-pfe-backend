@@ -25,8 +25,6 @@ app.use('/activeConvos',activeConvosRoutes);
 
 app.get('/',(req,res) => {
   res.send('We are on home');
-  
-  
 })
 
 
