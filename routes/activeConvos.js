@@ -4,12 +4,19 @@ const ActiveConversations = require('../models/ActiveConvo');
 const router = express.Router();
 
 
-router.get('/',(req,res) => {
-  res.send('Welcome to the Active Convos Page');
+router.get('/messages/:id',async (req,res) => {
+
+  const id = req.params.id;
+
+  const messages = await ActiveConversations.findOne({
+    cuid: id
+  });
+  
+  res.status(200).json(messages.chats);
 })
 
 
-router.post('/', async (req,res) => {
+router.post('/createConvo', async (req,res) => {
   const {cuid,users_joined,chats} = req.body;
   
   const aConvo = new ActiveConversations({
@@ -26,7 +33,7 @@ router.post('/', async (req,res) => {
 
 })
 
-router.put('/:id', async (req,res) => {
+router.put('/chats/:id', async (req,res) => {
   const {message,sender,date} = req.body;
   const xd = {
     message: message,
@@ -38,32 +45,31 @@ router.put('/:id', async (req,res) => {
       { cuid: req.params.id}, 
       { $push: { chats: xd } }
   );
-  res.json(result);
+  res.status(200).json(result);
   }catch(err){
-    res.json({message: err})
+    res.status(400).json({message: err})
     console.log(err);
   }
  
 })
 
 router.put('/userjoin/:id', async (req,res) => {
-  const {fullName,username,date} = req.body;
+  const {fullName,username,joinedDate} = req.body;
   const xd = {
     fullName,
     username,
-    joinedDate: date
+    joinedDate
   }
   try{
     const result = await ActiveConversations.updateOne(
       { cuid: req.params.id}, 
       { $push: { users_joined: xd } }
   );
-  res.json(result);
+  res.status(200).json(result);
   }catch(err){
-    res.json({message: err})
+    res.status(400).json({message: err})
     console.log(err);
   }
- 
 })
 
 
