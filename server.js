@@ -9,6 +9,7 @@ const convoRoutes = require('./routes/convos');
 const usersRoutes = require('./routes/users');
 const activeConvosRoutes = require('./routes/activeConvos');
 const loginStatusRoutes = require('./routes/loginStatus');
+const searchUserConvosRoutes = require('./routes/searchUserConvos');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/status',loginStatusRoutes);
 app.use('/convos', convoRoutes);
 app.use('/users', usersRoutes);
 app.use('/activeConvos',activeConvosRoutes);
+
 //Routes
 
 app.get('/',(req,res) => {

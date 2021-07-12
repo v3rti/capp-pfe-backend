@@ -4,26 +4,59 @@ const ActiveConversations = require('../models/ActiveConvo');
 const router = express.Router();
 
 
-router.get('/messages/:id',async (req,res) => {
+router.get('/all', async(req,res) => {
+  
+  const allConvos = await ActiveConversations.find();
+  
+  res.status(200).json(allConvos);
+
+})
+
+
+router.get('/messages/:id',async (req,res,next) => {
 
   const id = req.params.id;
 
   const messages = await ActiveConversations.findOne({
     cuid: id
   });
+
   
-  res.status(200).json(messages.chats);
+  if(messages !== null){
+    res.status(200).json(messages.chats);
+  }
+  next();
+})
+
+router.get('/messages',async (req,res) => {
+
+  const messages = await ActiveConversations.find();
+  
+  res.status(200).json(messages);
 })
 
 
 router.post('/createConvo', async (req,res) => {
-  const {cuid,users_joined,chats} = req.body;
-  
+  const {cuid,owner,isPublic,image,description,title,currentUser} = req.body;
+  const ownerJoining = {
+    fullName: currentUser.fullName,
+    username: currentUser.username,
+    joinedDate: Date.now()
+  }
+
+
+  console.log(req.body);
   const aConvo = new ActiveConversations({
     cuid,
-    users_joined,
-    chats
+    title,
+    isPublic,
+    owner,
+    description,
+    image,
+    users_joined: ownerJoining
   })
+
+  
   try {
   const savedAConvo = await aConvo.save();
   res.json(savedAConvo);
@@ -54,10 +87,10 @@ router.put('/chats/:id', async (req,res) => {
 })
 
 router.put('/userjoin/:id', async (req,res) => {
-  const {fullName,username,joinedDate} = req.body;
+  const {fullName,email,joinedDate} = req.body;
   const xd = {
     fullName,
-    username,
+    email,
     joinedDate
   }
   try{

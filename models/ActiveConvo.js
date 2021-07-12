@@ -5,7 +5,7 @@ const UsersJoinedSchema = new mongoose.Schema({
   fullName: {
     type: String
   },
-  username: {
+  email: {
     type: String
   },
   joinedDate: {
@@ -29,8 +29,23 @@ const ActiveConvoSchema = new mongoose.Schema({
   cuid: {
     type: String,
   },
+  owner: {
+    type: String,
+  },
+  isPublic: {
+    type: Boolean
+  },
+  image: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  title: {
+    type: String
+  },
   users_joined: [UsersJoinedSchema],
-  chats: [ChatMessagesSchema]
+  chats: [ChatMessagesSchema],
 })
 
 const ActiveConversations = mongoose.model('ActiveConversation',ActiveConvoSchema);

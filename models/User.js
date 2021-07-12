@@ -1,6 +1,15 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+const ConvosJoinedSchema = new mongoose.Schema({
+  convo_id: {
+    type: String
+  },
+  joined_date: {
+    type: String
+  }
+})
+
 const UserSchema = new mongoose.Schema({
   fullName: {
     type: String,
@@ -22,7 +31,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: [6, 'Minimum Password Length is 6 Characters']
-  }
+  },
+  convos_joined: [ConvosJoinedSchema]
 
 })
 

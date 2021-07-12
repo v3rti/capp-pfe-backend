@@ -11,7 +11,7 @@ router.get('/', requireAuth, async (req,res) => {
     res.json(convos)
     
   }catch(err){
-    res.json({message: err})
+    res.json({message: err.message})
   }
 })
 

@@ -39,6 +39,24 @@ router.get('/',(req,res) => {
   res.send('Hello into users page');
 })
 
+router.put('/joins/', async (req,res) => {
+  const {convo_id,joined_date,email} = req.body;
+  const userjoining = {
+    convo_id,
+    joined_date
+  }
+  try{
+    const result = await User.updateOne(
+      { email }, 
+      { $push: { convos_joined: userjoining } }
+  );
+  res.status(200).json(result);
+  }catch(err){
+    res.status(400).json({message: err})
+    console.log(err);
+  }
+ 
+})
 
 router.post('/',async (req,res) => {
   const {fullName, email, username, password} = req.body;
@@ -70,7 +88,7 @@ router.post('/login', (req,res) => {
     if(docs){
       bcrypt.compare(password, docs.password, (err,bres) => {
         if(bres){
-          const token = jwt.sign({id: docs._id, fullName: docs.fullName, email: docs.email, username: docs.username}, process.env.TOKEN_SECRET);
+          const token = jwt.sign({id: docs._id, fullName: docs.fullName, email: docs.email, username: docs.usernamen}, process.env.TOKEN_SECRET);
           res.cookie('jwt', token, { httpOnly: true, maxAge: 1000*60*60*24*3 });
           res.status(200).json(docs)
         }else {
