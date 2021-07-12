@@ -86,6 +86,22 @@ router.put('/chats/:id', async (req,res) => {
  
 })
 
+router.put('/userjoinwait/:id', async (req,res) => {
+  const {email,joinedDate} = req.body;
+  const member = {email,joinedDate};
+
+  try{
+    const result = await ActiveConversations.updateOne(
+      { cuid: req.params.id}, 
+      { $push: { waiting_list : member } }
+  );
+  res.status(200).json(result);
+  }catch(err){
+    res.status(400).json({message: err})
+    console.log(err);
+  }
+})
+
 router.put('/userjoin/:id', async (req,res) => {
   const {fullName,email,joinedDate} = req.body;
   const xd = {
@@ -100,10 +116,26 @@ router.put('/userjoin/:id', async (req,res) => {
   );
   res.status(200).json(result);
   }catch(err){
-    res.status(400).json({message: err})
+    res.status(200).json({message: err})
     console.log(err);
   }
 })
 
+
+router.post('/waitinglist', async(req,res,next) => {
+  const {convoId,email} = req.body;
+  try{
+    const result = await ActiveConversations.findOne({cuid: convoId});
+    result.waiting_list.map((member) => {
+      if(member.email === email){
+        res.status(200).send(true);
+        return;
+      }
+    })
+    res.send(false);
+  }catch(err){
+    next();
+  }
+})
 
 module.exports = router;

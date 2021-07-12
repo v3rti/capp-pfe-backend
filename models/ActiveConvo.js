@@ -13,6 +13,15 @@ const UsersJoinedSchema = new mongoose.Schema({
   }
 })
 
+const WaitingList = new mongoose.Schema({
+  email: {
+    type: String
+  },
+  joinedDate: {
+    type: Date
+  }
+})
+
 const ChatMessagesSchema = new mongoose.Schema({
   senderUsername: {
     type: String
@@ -24,6 +33,7 @@ const ChatMessagesSchema = new mongoose.Schema({
     type: Date
   },
 })
+
 
 const ActiveConvoSchema = new mongoose.Schema({
   cuid: {
@@ -46,6 +56,7 @@ const ActiveConvoSchema = new mongoose.Schema({
   },
   users_joined: [UsersJoinedSchema],
   chats: [ChatMessagesSchema],
+  waiting_list: [WaitingList]
 })
 
 const ActiveConversations = mongoose.model('ActiveConversation',ActiveConvoSchema);
