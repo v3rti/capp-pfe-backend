@@ -1,5 +1,6 @@
 const express = require('express');
 const ActiveConversations = require('../models/ActiveConvo');
+const User = require('../models/User')
 
 const router = express.Router();
 
@@ -137,5 +138,76 @@ router.post('/waitinglist', async(req,res,next) => {
     next();
   }
 })
+
+router.post('/owned/', async (req,res) => {
+  const {email} = req.body;
+
+  const result = await ActiveConversations.find({owner: email});
+  res.json(result);
+
+})
+
+router.post('/ownedWaitingList/', async (req,res) => {
+  const {email,convoId} = req.body;
+
+  const result = await ActiveConversations.find({owner: email, cuid: convoId});
+  res.json(result.map((conv) => conv.waiting_list));
+
+})
+
+
+router.post('/waitAccept', async (req,res) => {
+  const {convoId,email,joinedDate} = req.body;
+
+  
+
+  try{
+    const findFn = await User.findOne({email: email});
+
+    const waitUser = {
+      fullName: findFn.fullName,
+      email,
+      joinedDate
+    }
+
+    const adding = await ActiveConversations.updateOne(
+      { cuid: convoId}, 
+      { $push: { users_joined: waitUser } }
+    );
+
+    const removing = await ActiveConversations.updateOne(
+      {cuid: convoId},
+      { $pull: { waiting_list: {email: email} } }
+    )
+      
+    res.status(200).send("Accepted!")
+
+  }catch(err){
+    res.status(200).json({message: err})
+    console.log(err);
+  }
+
+  
+})
+
+router.post('/waitDenied', async (req,res) => {
+
+  const {convoId,email} = req.body;
+
+  try{
+    
+    const removing = await ActiveConversations.updateOne(
+      {cuid: convoId},
+      { $pull: { waiting_list: {email: email} } }
+    )
+      
+    res.status(200).send("Removed/Denied!")
+
+  }catch(err){
+    res.status(200).json({message: err})
+    console.log(err);
+  }
+})
+
 
 module.exports = router;
