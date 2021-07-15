@@ -70,17 +70,36 @@ router.post('/',async (req,res) => {
   })
   
   try{
-    const savedUser = await user.save();
-    console.log(savedUser);
-    res.json(savedUser);
+    const searchUser = await User.findOne({email: email});
+
+    if(searchUser === undefined || searchUser === null){
+      const savedUser = await user.save();
+      res.status(200).send("ok");
+    }else{
+      res.status(200).send("already");
+    }
     
   }catch(err){
-    const funcError = handlingErrors(err);
-    res.status(400).json({errorMsg: funcError})
-  }
-
-  
+    res.status(400).json({message: err.message})
+  } 
 })
+
+router.post('/signuptest',async (req,res) => {
+  const {email} = req.body;
+  
+  try{
+    const savedUser = await User.findOne({email: email});
+    if(savedUser === undefined || savedUser === null){
+      res.status(404).send("lmao");
+    }else{
+      res.status(200).send(savedUser);
+    }
+  }catch(err){
+    res.status(400).json({message: err.message})
+  } 
+
+})
+
 
 router.post('/login', (req,res) => {
   const {email,password} = req.body;

@@ -79,7 +79,7 @@ router.put('/chats/:id', async (req,res) => {
       { cuid: req.params.id}, 
       { $push: { chats: xd } }
   );
-  res.status(200).json(result);
+  res.status(200).send("sent");
   }catch(err){
     res.status(400).json({message: err})
     console.log(err);
@@ -170,6 +170,11 @@ router.post('/waitAccept', async (req,res) => {
       joinedDate
     }
 
+    const addUserConvo = await User.updateOne(
+      {email: email},
+      { $push: {convos_joined: {convo_id: convoId, joined_date: joinedDate}}});
+
+
     const adding = await ActiveConversations.updateOne(
       { cuid: convoId}, 
       { $push: { users_joined: waitUser } }
@@ -206,6 +211,18 @@ router.post('/waitDenied', async (req,res) => {
   }catch(err){
     res.status(200).json({message: err})
     console.log(err);
+  }
+})
+
+router.post('/specificConvo',async (req,res) => {
+  
+  const {convoId} = req.body;
+
+  try{
+    const result = await ActiveConversations.findOne({cuid: convoId});
+    res.status(200).json(result.users_joined);
+  }catch(err){
+    res.status(200).json({message: err.message})
   }
 })
 
